@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WordWise AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col items-center py-10">
+    <div class="mx-auto w-full max-w-6xl px-4 py-4">
+      <header class="mb-8 rounded-[2rem] bg-gradient-to-r from-indigo-600 via-sky-600 to-cyan-500 p-8 shadow-2xl text-white">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div class="space-y-4">
+            <p class="uppercase tracking-[0.3em] text-xs text-cyan-100">Study Mode</p>
+            <h1 class="text-4xl font-bold lg:text-5xl">WordWise AI</h1>
+            <p class="max-w-2xl text-slate-100/90">
+              Practice vocabulary with instant meanings, examples, synonyms, antonyms and quick quizzes.
+              Perfect for study sessions and exam prep.
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="hidden md:flex flex-col gap-3 text-sm text-slate-100">
+              <span class="rounded-full bg-white/10 px-4 py-2">Fast search</span>
+              <span class="rounded-full bg-white/10 px-4 py-2">Study cards</span>
+              <span class="rounded-full bg-white/10 px-4 py-2">Save words</span>
+            </div>
+            <img
+              id="heroImage"
+              src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80"
+              alt="Study desk with books and laptop"
+              class="w-36 h-36 rounded-lg object-cover shadow-lg hidden md:block"
+            />
+          </div>
+        </div>
+      </header>
+
+      <div class="grid gap-6 lg:grid-cols-[1.5fr_0.9fr]">
+        <div class="space-y-6">
+          <section class="rounded-[2rem] bg-white p-6 shadow-lg">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <h2 class="text-xl font-semibold text-slate-900">Search a word</h2>
+                <p class="text-sm text-slate-500">Type any English word and tap Search to reveal its study card.</p>
+              </div>
+            </div>
+            <label for="wordInput" class="block text-slate-700 font-semibold mb-3">Enter a word</label>
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <input
+                type="text"
+                id="wordInput"
+                placeholder="e.g. innovation"
+                class="flex-1 rounded-[1rem] border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              />
+              <button
+                id="searchBtn"
+                class="rounded-[1rem] bg-indigo-600 px-6 py-3 text-white shadow hover:bg-indigo-700 transition"
+              >
+                Search
+              </button>
+            </div>
+            <div id="loading" class="mt-4 min-h-[1.5rem] text-sm text-slate-500 hidden">Generating results...</div>
+          </section>
+
+          <section id="resultBox" class="hidden rounded-[2rem] bg-white p-6 shadow-lg">
+            <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 id="wordTitle" class="text-3xl font-bold text-slate-900"></h2>
+                <p class="text-sm text-slate-500">Study the meaning, example, and related terms.</p>
+              </div>
+              <button
+                id="saveBtn"
+                class="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-600 transition"
+              >
+                ⭐ Save Word
+              </button>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div class="rounded-[1.5rem] bg-slate-50 p-5">
+                <h3 class="text-sm uppercase tracking-[0.2em] text-slate-500 mb-3">Meaning</h3>
+                <p id="wordMeaning" class="text-slate-700 whitespace-pre-line"></p>
+              </div>
+              <div class="rounded-[1.5rem] bg-slate-50 p-5">
+                <h3 class="text-sm uppercase tracking-[0.2em] text-slate-500 mb-3">Example</h3>
+                <p id="wordExample" class="text-slate-700 italic"></p>
+              </div>
+            </div>
+            <div class="mt-4 grid gap-4 lg:grid-cols-2">
+              <div class="rounded-[1.5rem] bg-slate-50 p-5">
+                <h3 class="text-sm uppercase tracking-[0.2em] text-slate-500 mb-3">Synonyms</h3>
+                <p id="wordSynonyms" class="text-slate-700"></p>
+              </div>
+              <div class="rounded-[1.5rem] bg-slate-50 p-5">
+                <h3 class="text-sm uppercase tracking-[0.2em] text-slate-500 mb-3">Antonyms</h3>
+                <p id="wordAntonyms" class="text-slate-700"></p>
+              </div>
+            </div>
+            <div class="mt-4 rounded-[1.5rem] bg-slate-50 p-5">
+              <h3 class="text-sm uppercase tracking-[0.2em] text-slate-500 mb-3">Name details</h3>
+              <p id="nameGender" class="text-slate-700"></p>
+              <p id="nameMeaning" class="text-slate-700 whitespace-pre-line"></p>
+            </div>
+          </section>
+
+          <section id="quizBox" class="hidden rounded-[2rem] bg-white p-6 shadow-lg">
+            <div class="mb-4">
+              <h2 class="text-xl font-semibold text-slate-900">Quick Quiz</h2>
+              <p class="text-sm text-slate-500">Test your new word immediately.</p>
+            </div>
+            <p id="quizQuestion" class="text-slate-700 mb-4 font-semibold"></p>
+            <input
+              id="quizAnswer"
+              type="text"
+              placeholder="Your answer"
+              class="w-full rounded-[1rem] border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            />
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button
+                id="checkQuiz"
+                class="rounded-[1rem] bg-indigo-600 px-6 py-3 text-white shadow hover:bg-indigo-700 transition"
+              >
+                Check
+              </button>
+              <p id="quizResult" class="text-base font-semibold"></p>
+            </div>
+          </section>
+        </div>
+
+        <aside id="savedWords" class="rounded-[2rem] bg-white p-6 shadow-lg">
+          <div class="mb-5">
+            <h2 class="text-xl font-semibold text-slate-900">My Word Bank</h2>
+            <p class="text-sm text-slate-500">Review and remove saved study words anytime.</p>
+          </div>
+          <ul id="wordList" class="space-y-3 text-slate-700"></ul>
+        </aside>
+      </div>
+    </div>
+
+    <script src="api.js" type="module"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
